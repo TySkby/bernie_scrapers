@@ -12,21 +12,23 @@ from time import time
 from pymongo.cursor import CursorType
 
 
-logging.basicConfig(format="%(asctime)s - %(levelname)s : %(message)s",
-                    level=logging.INFO)
+logging.basicConfig(
+    format="%(asctime)s - %(levelname)s : %(message)s",
+    level=logging.INFO
+)
 
 
 def config():
-    configfile = "/opt/bernie/config.yml"
+    config_file = "/opt/bernie/config.yml"
     try:
-        with open(configfile, 'r') as f:
-            conf = yaml.load(f)
+        with open(config_file, 'r') as f:
+            config_data = yaml.load(f)
     except IOError:
         # msg = "Could not open config file: {0}"
         # logging.info(msg.format(configfile))
         sys.exit(1)
     else:
-        return conf
+        return config_data
 
 
 def connect_mongo():
@@ -39,6 +41,7 @@ def connect_mongo():
         mechanism='SCRAM-SHA-1'
     )
     return db
+
 
 if __name__ == '__main__':
     db = connect_mongo()
