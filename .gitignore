@@ -2,3 +2,9 @@
 config.yml
 es-api.py
 .gitignore
+
+# Virtual Environments
+venv/
+
+# IDE project settings
+.idea
