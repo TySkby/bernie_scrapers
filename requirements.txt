@@ -1,0 +1,8 @@
+BeautifulSoup
+docker-py
+elasticsearch
+pymongo
+python-dateutil
+PyYAML
+requests
+schedule
