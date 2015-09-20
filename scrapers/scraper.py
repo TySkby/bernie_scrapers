@@ -1,4 +1,3 @@
-
 import logging
 import requests
 import sys
@@ -11,7 +10,6 @@ from pymongo import MongoClient
 
 
 class Scraper(object):
-
     __metaclass__ = ABCMeta
 
     def __init__(self):
@@ -40,20 +38,20 @@ class Scraper(object):
         )
         return db.bernie
 
-    def get(self, url, params=False, result_format="html"):
-        for x in range(3):
-            if params:
-                r = requests.get(url, params=params)
-            else:
-                r = requests.get(url)
-            if r.status_code == 200:
-                if result_format in ("html", "xml"):
-                    return BeautifulSoup(r.text)
-                elif result_format == "json":
-                    return r.json()
+    def get(self, url, params=None, result_format="html", retries_remaining=3):
+        response = requests.get(url, params=params or {})
+        if response.status_code == 200:
+            if result_format in ("html", "xml"):
+                return BeautifulSoup(response.text)
+            elif result_format == "json":
+                return response.json()
+
+        if retries_remaining > 1:
             time.sleep(5)
+            self.get(url, params, result_format, retries_remaining=retries_remaining - 1)
+
         msg = "Received {0} from {1} after 3 attempts."
-        logging.critical(msg.format(r.status_code, r.url))
+        logging.critical(msg.format(response.status_code, response.url))
 
     @abstractmethod
     def go(self):
