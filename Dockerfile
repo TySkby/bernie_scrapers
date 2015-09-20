@@ -1,12 +1,6 @@
 FROM python:2.7
 
-RUN pip install BeautifulSoup	\
-	docker-py 					\
-	pymongo 					\
-	python-dateutil 			\
-	requests					\
-	schedule 					\
-	pyyaml
+RUN pip install -r requirements.txt
 
 COPY ./scraper_scheduler.py /bin/scraper_scheduler.py
 
